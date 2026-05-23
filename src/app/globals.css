@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f9ff;
+  --foreground: #434655;
+  --primary: #004ac6;
+  --primary-light: #dce9ff;
+  --primary-muted: #eff4ff;
+  --border: #c3c6d7;
+  --muted: #737686;
+  --accent-orange: #943700;
+  --accent-green: #585f66;
+  --card: #ffffff;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-primary-muted: var(--primary-muted);
+  --color-border: var(--border);
+  --color-muted: var(--muted);
+  --color-accent-orange: var(--accent-orange);
+  --color-accent-green: var(--accent-green);
+  --color-card: var(--card);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+@keyframes expand {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 200px;
+  }
+}
+
+.animate-expand {
+  animation: expand 0.25s ease-out forwards;
+}
