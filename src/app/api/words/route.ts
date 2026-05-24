@@ -18,7 +18,7 @@ export async function GET(request: NextRequest) {
       : demoWords;
 
     if (filter === "starred") words = words.filter((w) => w.isStarred);
-    if (filter === "review") words = words.filter((w) => w.needsReview && !w.isMastered);
+    if (filter === "review") words = words.filter((w) => !w.isStarred && !w.isMastered);
     if (search) words = words.filter((w) => w.spelling.toLowerCase().includes(search.toLowerCase()));
 
     const total = words.length;
@@ -55,7 +55,7 @@ export async function GET(request: NextRequest) {
     }));
 
     if (filter === "starred") words = words.filter((w) => w.isStarred);
-    if (filter === "review") words = words.filter((w) => w.needsReview && !w.isMastered);
+    if (filter === "review") words = words.filter((w) => !w.isStarred && !w.isMastered);
     if (search) words = words.filter((w) => w.spelling.toLowerCase().includes(search.toLowerCase()));
 
     const total = words.length;

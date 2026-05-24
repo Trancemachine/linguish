@@ -65,7 +65,7 @@ export default function WordsPracticePage() {
 
   // SWR: fetch words when KB or filter changes
   const swrKey = selectedKbIds.length > 0
-    ? `/api/words?knowledge_base_ids=${selectedKbIds.join(",")}&filter=${filter === "starred" ? "wordbook" : filter}&pageSize=500`
+    ? `/api/words?knowledge_base_ids=${selectedKbIds.join(",")}&filter=${filter}&pageSize=500`
     : null;
 
   const { data: wordsData, isLoading } = useSWR<WordsResponse>(swrKey, fetcher, {
