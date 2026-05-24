@@ -71,7 +71,7 @@ export async function applySeedForUser(userId: string): Promise<string | null> {
           content: c.content,
           token_count: c.tokenCount,
         }));
-        await supabase.from("document_chunks").insert(chunkRows).catch(() => {});
+        try { await supabase.from("document_chunks").insert(chunkRows); } catch {}
       }
     }
   }
