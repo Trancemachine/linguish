@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { getUser } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getRouteHandlerUser } from "@/lib/auth";
 
 export async function DELETE(
   _request: Request,
   { params }: { params: Promise<{ word_id: string }> }
 ) {
   const { word_id } = await params;
-  const user = await getUser();
+  const user = await getRouteHandlerUser();
 
   if (!user) {
     return NextResponse.json({ ok: true });
   }
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { error } = await supabase
-    .from("word_book")
+    .from("user_word_status")
     .delete()
     .eq("user_id", user.id)
     .eq("word_id", word_id);

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, Mail, Sparkles } from "lucide-react";
@@ -17,13 +17,21 @@ export default function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Warm up Supabase connection for faster navigation after login
+  useEffect(() => {
+    fetch("/api/ping").catch(() => {});
+    // Keep connection alive every 60s
+    const interval = setInterval(() => fetch("/api/ping").catch(() => {}), 60000);
+    return () => clearInterval(interval);
+  }, []);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     if (!isSupabaseConfigured()) {
-      router.push("/");
+      router.push("/practice/words");
       return;
     }
 
@@ -38,7 +46,7 @@ export default function AuthPage() {
       setError(authError.message);
       return;
     }
-    router.push("/");
+    router.push("/practice/words");
   }
 
   return (
@@ -46,11 +54,14 @@ export default function AuthPage() {
       <AuthBackground />
       <div className="relative z-10 w-full max-w-md">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-lg font-bold text-white">
-            LP
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-7 h-7">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+            </svg>
           </div>
-          <h1 className="text-3xl font-bold text-white">Linguist AI</h1>
-          <p className="mt-2 text-sm text-white/60">学术语言平台 · 学者的智囊团</p>
+          <h1 className="text-3xl font-bold text-white">英语学习</h1>
+          <p className="mt-2 text-sm text-white/60">专业英语学习</p>
         </div>
 
         <div className="rounded-xl border border-border bg-card shadow-xl">
@@ -120,7 +131,7 @@ export default function AuthPage() {
 
             <button
               type="button"
-              onClick={() => router.push("/")}
+              onClick={() => router.push("/practice/words")}
               className="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary-muted py-2.5 text-sm font-medium text-primary transition hover:bg-primary-light"
             >
               <Sparkles className="h-4 w-4" />

@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // 👇 这行是解决 tesseract.js 在 Vercel 构建问题的关键配置
-  serverExternalPackages: ["tesseract.js"],
+  serverExternalPackages: ["tesseract.js", "pdf-parse"],
 };
 
 export default nextConfig;

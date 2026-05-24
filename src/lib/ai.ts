@@ -23,7 +23,8 @@ export function isAiConfigured() {
 
 async function apiRequest(
   messages: ChatMessage[],
-  stream: boolean
+  stream: boolean,
+  maxTokens: number = 2048
 ): Promise<Response> {
   const { baseUrl, apiKey } = getConfig();
   if (!apiKey) {
@@ -47,7 +48,7 @@ async function apiRequest(
     },
     body: JSON.stringify({
       model: "deepseek-chat",
-      max_tokens: 2048,
+      max_tokens: maxTokens,
       system,
       messages: chatMessages,
       stream,
@@ -55,8 +56,8 @@ async function apiRequest(
   });
 }
 
-export async function chatCompletion(messages: ChatMessage[]): Promise<string> {
-  const res = await apiRequest(messages, false);
+export async function chatCompletion(messages: ChatMessage[], maxTokens?: number): Promise<string> {
+  const res = await apiRequest(messages, false, maxTokens);
 
   if (!res.ok) {
     const err = await res.text();
@@ -112,32 +113,53 @@ export async function* chatCompletionStream(messages: ChatMessage[]): AsyncGener
 }
 
 export async function extractKeywords(text: string): Promise<ExtractedWord[]> {
-  const snippet = text.slice(0, 8000);
-  const raw = await chatCompletion([
-    {
-      role: "system",
-      content:
-        "You extract English vocabulary from academic text. Return ONLY valid JSON array: [{\"word\":\"...\",\"translation\":\"中文\",\"example\":\"English sentence\",\"importance\":90}]. importance is 1-100. Max 30 items.",
-    },
-    { role: "user", content: snippet },
-  ]);
-
-  const match = raw.match(/\[[\s\S]*\]/);
-  if (!match) return [];
-
-  try {
-    const parsed = JSON.parse(match[0]) as ExtractedWord[];
-    return parsed.filter((w) => w.word && w.translation);
-  } catch {
-    return [];
+  // Split text into chunks of ~25000 chars for full document coverage
+  const CHUNK_SIZE = 25000;
+  const chunks: string[] = [];
+  for (let i = 0; i < text.length; i += CHUNK_SIZE) {
+    chunks.push(text.slice(i, i + CHUNK_SIZE));
   }
+
+  const allWords: ExtractedWord[] = [];
+  const seen = new Set<string>();
+
+  for (const chunk of chunks) {
+    try {
+      const raw = await chatCompletion([
+        {
+          role: "system",
+          content:
+            "You extract English vocabulary from academic text. Return ONLY valid JSON array: [{\"word\":\"...\",\"translation\":\"中文\",\"example\":\"English sentence\",\"importance\":90}]. importance is 1-100. Max 50 items. Focus on important academic/professional terms.",
+        },
+        { role: "user", content: chunk },
+      ], 4096);
+
+      const match = raw.match(/\[[\s\S]*\]/);
+      if (!match) continue;
+
+      const parsed = JSON.parse(match[0]) as ExtractedWord[];
+      for (const w of parsed) {
+        if (w.word && w.translation && !seen.has(w.word.toLowerCase())) {
+          seen.add(w.word.toLowerCase());
+          allWords.push(w);
+        }
+      }
+    } catch {
+      // Skip failed chunks
+    }
+
+    // Safety limit: max 500 words total
+    if (allWords.length >= 500) break;
+  }
+
+  return allWords;
 }
 
 export async function translateText(text: string): Promise<string> {
   return chatCompletion([
     {
       role: "system",
-      content: "Translate the following English text to Chinese. Return translation only.",
+      content: "You are a translator. Translate the following English text to Chinese. Rules: (1) Return ONLY the Chinese translation, nothing else. (2) Use ONLY plain text. (3) NEVER use asterisks, backticks, hashes, or any formatting symbols. (4) If the input is already Chinese, return it as-is.",
     },
     { role: "user", content: text },
   ]);

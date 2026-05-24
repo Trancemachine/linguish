@@ -27,22 +27,6 @@ export interface Word {
   importance: number;
 }
 
-export interface WordBookEntry {
-  id: string;
-  word_id: string;
-  source: "manual" | "wrong";
-  word: Word;
-}
-
-export interface StatsSummary {
-  today_words: number;
-  today_dialogues: number;
-  today_duration_minutes: number;
-  month_words: number;
-  month_dialogues: number;
-  month_duration_minutes: number;
-}
-
 export interface DialogueMessage {
   id: string;
   role: "user" | "assistant";

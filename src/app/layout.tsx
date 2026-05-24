@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Linguist AI - 学术语言平台",
+  title: "英语学习 - 专业英语学习",
   description: "学者的智囊团 · 智能英语学习平台",
 };
 

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
-import { getUser } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getRouteHandlerUser } from "@/lib/auth";
 
 export async function PUT(
   request: NextRequest,
@@ -9,12 +9,12 @@ export async function PUT(
   const { id } = await params;
   const { current_word_id } = await request.json();
 
-  const user = await getUser();
+  const user = await getRouteHandlerUser();
   if (!user) {
     return NextResponse.json({ id, current_word_id });
   }
 
-  const supabase = await createClient();
+  const supabase = createAdminClient();
   const { data, error } = await supabase
     .from("knowledge_bases")
     .update({ current_word_id })

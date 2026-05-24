@@ -30,7 +30,6 @@ npm run dev
 | 模块 | 状态 |
 |------|------|
 | 登录/注册 + 游客模式 | ✅ |
-| Dashboard 统计 + 生词本 | ✅（登录后读 Supabase） |
 | 知识库 CRUD + 文档上传 | ✅（需登录 + Storage bucket） |
 | 单词练习（展开/发音/进度/生词本） | ✅ |
 | AI 对话 + 翻译 | ✅（Anthropic 兼容 DeepSeek API） |

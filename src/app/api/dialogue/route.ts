@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { chatCompletion, chatCompletionStream, isAiConfigured } from "@/lib/ai";
-import { createClient } from "@/lib/supabase/server";
-import { getUser } from "@/lib/auth";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { getRouteHandlerUser } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
-  const { messages, stream } = await request.json();
+  const { messages, stream, knowledge_base_ids } = await request.json();
 
   if (!isAiConfigured()) {
     return NextResponse.json({
@@ -12,10 +12,36 @@ export async function POST(request: NextRequest) {
     });
   }
 
+  let kbContext = "";
+  if (knowledge_base_ids?.length > 0) {
+    try {
+      const supabase = createAdminClient();
+      const { data: words } = await supabase
+        .from("words")
+        .select("spelling, definition, example_sentence_en")
+        .in("knowledge_base_id", knowledge_base_ids)
+        .limit(30);
+
+      if (words && words.length > 0) {
+        kbContext =
+          "\n\nHere are some vocabulary words from the user's selected knowledge base that you can try to use in the conversation:\n" +
+          (words as any[])
+            .map(
+              (w: any) =>
+                `- ${w.spelling}: ${w.definition}${w.example_sentence_en ? ` (e.g. "${w.example_sentence_en}")` : ""}`,
+            )
+            .join("\n");
+      }
+    } catch {
+      // KB context is optional
+    }
+  }
+
   const systemMessage = {
     role: "system" as const,
     content:
-      "You are an English interview coach for academic researchers. Keep responses concise, encouraging, and in English.",
+      "You are an English interview coach for academic researchers. Keep responses concise (2-4 sentences), encouraging, and in English. IMPORTANT: Use ONLY plain text. NEVER use asterisks, backticks, or any markdown formatting symbols." +
+      kbContext,
   };
   const chatMessages = [
     systemMessage,
@@ -34,7 +60,7 @@ export async function POST(request: NextRequest) {
         async start(controller) {
           try {
             for await (const chunk of generator) {
-              controller.enqueue(encoder.encode(chunk));
+              controller.enqueue(encoder.encode(chunk.replace(/\*/g, "")));
             }
           } finally {
             controller.close();
@@ -43,12 +69,12 @@ export async function POST(request: NextRequest) {
       });
 
       // Log practice session in background (fire-and-forget)
-      const user = await getUser();
+      const user = await getRouteHandlerUser();
       if (user) {
-        const supabase = await createClient();
-        supabase.from("practice_sessions").insert({
+        const supabase = createAdminClient();
+        supabase.from("study_sessions").insert({
           user_id: user.id,
-          type: "dialogue",
+          module: "dialogue",
           duration_seconds: 60,
         }).then(() => {}, () => {});
       }
@@ -62,14 +88,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Non-streaming fallback
-    const content = await chatCompletion(chatMessages);
+    const rawContent = await chatCompletion(chatMessages);
+    const content = rawContent.replace(/\*/g, "");
 
-    const user = await getUser();
+    const user = await getRouteHandlerUser();
     if (user) {
-      const supabase = await createClient();
-      await supabase.from("practice_sessions").insert({
+      const supabase = createAdminClient();
+      await supabase.from("study_sessions").insert({
         user_id: user.id,
-        type: "dialogue",
+        module: "dialogue",
         duration_seconds: 60,
       });
     }

@@ -36,6 +36,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# raw extracted text files (copyrighted source material)
+.seed/*.txt
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

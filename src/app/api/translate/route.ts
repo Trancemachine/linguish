@@ -12,7 +12,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const translation = await translateText(text);
+    const raw = await translateText(text);
+    const translation = raw
+      .replace(/\*/g, "")               // remove ALL asterisks (paired, unpaired, standalone)
+      .replace(/`/g, "")                // remove all backticks
+      .replace(/#+\s?/g, "")            // remove heading markers
+      .replace(/\n{3,}/g, "\n\n")       // collapse excessive newlines
+      .trim();
     return NextResponse.json({ translation });
   } catch (err) {
     const message = err instanceof Error ? err.message : "翻译失败";
