@@ -227,7 +227,7 @@ export default function DialoguePage() {
 
   return (
     <AppShell title="场景对话练习" subtitle="AI 面试官 · 支持流式输出与语音输入">
-      <div className="relative flex h-[calc(100vh-12rem)] flex-col rounded-xl border border-border bg-card">
+      <div className="relative flex flex-1 min-h-0 flex-col rounded-xl border border-border bg-card pb-1">
         {/* Floating KB selector — top-left */}
         <div className="absolute left-3 top-3 z-10">
           <div className="relative">

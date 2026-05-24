@@ -138,7 +138,7 @@ export default function WordsPracticePage() {
     });
   }, [words, vocabSearch]);
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 11;
   const totalPages = Math.max(1, Math.ceil(matchingWords.length / itemsPerPage));
   const paginatedWords = matchingWords.slice(
     (currentPage - 1) * itemsPerPage,
@@ -223,9 +223,9 @@ export default function WordsPracticePage() {
 
   return (
     <AppShell title="单词练习" subtitle="点击单词展开详情，支持发音与进度标记">
-      <div className="space-y-5">
+      <div className="flex flex-col flex-1 min-h-0 pb-4">
         {/* Filter Tabs + KB Selector + Search */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 bg-white border border-slate-200 p-3 rounded-2xl shadow-sm">
+        <div className="flex flex-col sm:flex-row items-center gap-2 bg-white border border-slate-200 p-2.5 rounded-2xl shadow-sm">
           <div className="flex gap-2 ml-2">
             {[
               { id: "all" as const, label: "全部单词", count: totalCount },
@@ -239,7 +239,7 @@ export default function WordsPracticePage() {
                   setCurrentPage(1);
                 }}
                 className={cn(
-                  "px-4 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap",
+                  "px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap",
                   filter === tab.id
                     ? "bg-blue-600 text-white"
                     : "text-slate-500 hover:bg-slate-50 hover:text-slate-800",
@@ -262,7 +262,7 @@ export default function WordsPracticePage() {
           <div className="relative shrink-0">
             <button
               onClick={() => setKbDropdownOpen(!kbDropdownOpen)}
-              className="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-2 rounded-xl text-xs flex items-center gap-2 hover:border-slate-300 transition-colors"
+              className="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-xl text-xs flex items-center gap-2 hover:border-slate-300 transition-colors"
             >
               <span className="truncate max-w-[120px]">{displayLabel}</span>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -308,185 +308,187 @@ export default function WordsPracticePage() {
                 setCurrentPage(1);
               }}
               placeholder="搜索词汇..."
-              className="w-full pl-8 pr-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
             <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
           </div>
         </div>
 
         {/* Words List */}
-        <div className="space-y-4">
+        <div className="flex-1 flex flex-col min-h-0 mt-2">
           {isLoading ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-xs font-bold text-slate-400">
+            <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-xs font-bold text-slate-400">
               加载中...
             </div>
           ) : paginatedWords.length === 0 ? (
-            <div className="bg-white border border-slate-200 rounded-2xl p-12 text-center text-xs font-bold text-slate-400">
+            <div className="flex-1 bg-white border border-slate-200 rounded-2xl flex items-center justify-center text-xs font-bold text-slate-400">
               暂无匹配词汇，可切换筛选分类或调整搜索关键词。
             </div>
           ) : (
-            <div className="space-y-2.5">
-              {paginatedWords.map((word) => {
-                const isExpanded = expandedId === word.id;
-                return (
-                  <div
-                    key={word.id}
-                    data-tour="word-card"
-                    onClick={() => setExpandedId(isExpanded ? null : word.id)}
-                    className={cn(
-                      "bg-white border rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer",
-                      isExpanded
-                        ? "border-blue-300 shadow-md ring-1 ring-blue-500/10"
-                        : "border-slate-200 shadow-sm hover:border-slate-300",
-                    )}
-                  >
-                    {/* Word row — always-visible actions */}
-                    <div className="px-5 py-3 flex items-center justify-between select-none">
-                      <div className="flex items-center gap-3">
-                        <h3 className="text-lg font-extrabold text-slate-800 tracking-tight">
-                          {word.spelling}
-                        </h3>
-                        {isExpanded && word.phonetic && (
-                          <span className="text-xs font-bold font-mono text-slate-400 tracking-wide">
-                            {word.phonetic}
-                          </span>
-                        )}
-                      </div>
-
-                      <div className="flex items-center gap-2">
-                        {/* Pronunciation — always visible */}
-                        <button
-                          onClick={(e) => handleSound(word.spelling, e)}
-                          className={cn(
-                            "p-2 rounded-xl border transition-all",
-                            isExpanded
-                              ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
-                              : "bg-slate-50 text-slate-400 border-slate-200 hover:text-slate-600 hover:bg-slate-100",
-                          )}
-                          title="发音"
-                        >
-                          <Volume2 className="w-3.5 h-3.5" />
-                        </button>
-
-                        {/* Mastered toggle — always visible */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleMastered(word);
-                          }}
-                          className={cn(
-                            "p-2 rounded-xl border transition-all",
-                            word.isMastered
-                              ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100"
-                              : "bg-slate-50 text-slate-400 border-slate-200 hover:text-emerald-600 hover:bg-slate-100",
-                          )}
-                          title="标记掌握"
-                        >
-                          <CheckCircle
-                            className={cn(
-                              "w-3.5 h-3.5",
-                              word.isMastered && "fill-emerald-600 text-white",
-                            )}
-                          />
-                        </button>
-
-                        {/* Starred toggle — always visible */}
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            toggleStarred(word);
-                          }}
-                          className={cn(
-                            "p-2 rounded-xl border transition-all",
-                            word.isStarred
-                              ? "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100"
-                              : "bg-slate-50 text-slate-400 border-slate-200 hover:text-amber-500 hover:bg-slate-100",
-                          )}
-                          title="生词本关注"
-                        >
-                          <Star
-                            className={cn(
-                              "w-3.5 h-3.5",
-                              word.isStarred && "fill-amber-500 text-amber-500",
-                            )}
-                          />
-                        </button>
-
-                        <div className="text-slate-400">
-                          {isExpanded ? (
-                            <ChevronUp className="w-4 h-4" />
-                          ) : (
-                            <ChevronDown className="w-4 h-4" />
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Expanded detail */}
-                    {isExpanded && (
-                      <div className="px-5 pb-4 pt-2.5 border-t border-slate-100 bg-[#f8fafc]/50 space-y-3 select-text">
-                        <div className="flex items-start gap-3">
-                          {word.partOfSpeech && (
-                            <span className="shrink-0 text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider font-mono">
-                              {word.partOfSpeech}
+            <div className="flex-1 flex flex-col min-h-0">
+              <div className="flex-1 space-y-1.5 overflow-y-auto">
+                {paginatedWords.map((word) => {
+                  const isExpanded = expandedId === word.id;
+                  return (
+                    <div
+                      key={word.id}
+                      data-tour="word-card"
+                      onClick={() => setExpandedId(isExpanded ? null : word.id)}
+                      className={cn(
+                        "bg-white border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer",
+                        isExpanded
+                          ? "border-blue-300 shadow-sm ring-1 ring-blue-500/10"
+                          : "border-slate-200 shadow-sm hover:border-slate-300",
+                      )}
+                    >
+                      {/* Word row — always-visible actions */}
+                      <div className="px-4 py-2.5 flex items-center justify-between select-none">
+                        <div className="flex items-center gap-3">
+                          <h3 className="text-base font-extrabold text-slate-800 tracking-tight">
+                            {word.spelling}
+                          </h3>
+                          {word.phonetic && (
+                            <span className="text-xs font-bold font-mono text-slate-400 tracking-wide">
+                              {word.phonetic}
                             </span>
                           )}
-                          <p className="text-sm font-bold text-slate-700 leading-relaxed">
-                            {word.definition}
-                          </p>
                         </div>
 
-                        {word.exampleSentences && word.exampleSentences.length > 0 && (
-                          <div className="space-y-3.5 pl-1.5 border-l-2 border-slate-200">
-                            <div className="flex items-center gap-1.5">
-                              <span className="text-[10px] font-bold text-slate-400 bg-slate-200/50 px-1.5 py-0.5 rounded">
-                                例句
-                              </span>
-                            </div>
-                            {word.exampleSentences.map((ex, idx) => (
-                              <div key={idx} className="space-y-1">
-                                <p className="text-sm font-medium text-slate-800 leading-relaxed">
-                                  {idx + 1}. {ex.en}
-                                </p>
-                                {ex.cn && (
-                                  <p className="text-xs text-slate-500 font-medium">
-                                    {ex.cn}
-                                  </p>
-                                )}
-                              </div>
-                            ))}
+                        <div className="flex items-center gap-1.5">
+                          {/* Pronunciation — always visible */}
+                          <button
+                            onClick={(e) => handleSound(word.spelling, e)}
+                            className={cn(
+                              "p-1.5 rounded-xl border transition-all",
+                              isExpanded
+                                ? "bg-blue-50 text-blue-600 border-blue-200 hover:bg-blue-100"
+                                : "bg-slate-50 text-slate-400 border-slate-200 hover:text-slate-600 hover:bg-slate-100",
+                            )}
+                            title="发音"
+                          >
+                            <Volume2 className="w-3.5 h-3.5" />
+                          </button>
+
+                          {/* Mastered toggle — always visible */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleMastered(word);
+                            }}
+                            className={cn(
+                              "p-1.5 rounded-xl border transition-all",
+                              word.isMastered
+                                ? "bg-emerald-50 text-emerald-600 border-emerald-200 hover:bg-emerald-100"
+                                : "bg-slate-50 text-slate-400 border-slate-200 hover:text-emerald-600 hover:bg-slate-100",
+                            )}
+                            title="标记掌握"
+                          >
+                            <CheckCircle
+                              className={cn(
+                                "w-3.5 h-3.5",
+                                word.isMastered && "fill-emerald-600 text-white",
+                              )}
+                            />
+                          </button>
+
+                          {/* Starred toggle — always visible */}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              toggleStarred(word);
+                            }}
+                            className={cn(
+                              "p-1.5 rounded-xl border transition-all",
+                              word.isStarred
+                                ? "bg-amber-50 text-amber-600 border-amber-200 hover:bg-amber-100"
+                                : "bg-slate-50 text-slate-400 border-slate-200 hover:text-amber-500 hover:bg-slate-100",
+                            )}
+                            title="生词本关注"
+                          >
+                            <Star
+                              className={cn(
+                                "w-3.5 h-3.5",
+                                word.isStarred && "fill-amber-500 text-amber-500",
+                              )}
+                            />
+                          </button>
+
+                          <div className="text-slate-400">
+                            {isExpanded ? (
+                              <ChevronUp className="w-4 h-4" />
+                            ) : (
+                              <ChevronDown className="w-4 h-4" />
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
 
-          {/* Pagination */}
-          {totalPages > 1 && !isLoading && (
-            <div className="flex items-center justify-center gap-4 pt-4">
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-40 transition-all"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" /> 上一页
-              </button>
+                      {/* Expanded detail */}
+                      {isExpanded && (
+                        <div className="px-4 pb-3 pt-2 border-t border-slate-100 bg-[#f8fafc]/50 space-y-2 select-text">
+                          <div className="flex items-start gap-3">
+                            {word.partOfSpeech && (
+                              <span className="shrink-0 text-xs font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded uppercase tracking-wider font-mono">
+                                {word.partOfSpeech}
+                              </span>
+                            )}
+                            <p className="text-sm font-bold text-slate-700 leading-relaxed">
+                              {word.definition}
+                            </p>
+                          </div>
 
-              <span className="text-xs text-slate-400 font-medium">
-                第 {currentPage} / {totalPages} 页
-              </span>
+                          {word.exampleSentences && word.exampleSentences.length > 0 && (
+                            <div className="space-y-2 pl-1.5 border-l-2 border-slate-200">
+                              <div className="flex items-center gap-1.5">
+                                <span className="text-[10px] font-bold text-slate-400 bg-slate-200/50 px-1.5 py-0.5 rounded">
+                                  例句
+                                </span>
+                              </div>
+                              {word.exampleSentences.map((ex, idx) => (
+                                <div key={idx} className="space-y-0.5">
+                                  <p className="text-sm font-medium text-slate-800 leading-relaxed">
+                                    {idx + 1}. {ex.en}
+                                  </p>
+                                  {ex.cn && (
+                                    <p className="text-xs text-slate-500 font-medium">
+                                      {ex.cn}
+                                    </p>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
 
-              <button
-                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                disabled={currentPage === totalPages}
-                className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-40 transition-all"
-              >
-                下一页 <ChevronRight className="w-3.5 h-3.5" />
-              </button>
+              {/* Pagination */}
+              {totalPages > 1 && !isLoading && (
+                <div className="flex items-center justify-center gap-4 pt-3 pb-1">
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-40 transition-all"
+                  >
+                    <ChevronLeft className="w-3.5 h-3.5" /> 上一页
+                  </button>
+
+                  <span className="text-xs text-slate-400 font-medium">
+                    第 {currentPage} / {totalPages} 页
+                  </span>
+
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-bold text-slate-500 border border-slate-200 rounded-xl hover:bg-slate-50 disabled:opacity-40 transition-all"
+                  >
+                    下一页 <ChevronRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
             </div>
           )}
         </div>

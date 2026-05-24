@@ -361,40 +361,35 @@ export default function KnowledgePage() {
 
   return (
     <AppShell title="知识库">
-      <div className="space-y-8 animate-fade-in font-sans">
-        {/* Top Header Search Bar */}
-        <div className="flex items-center justify-between gap-4 pb-4 border-b border-slate-100">
-          <div className="relative flex-1 max-w-2xl">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-slate-400" />
-            </div>
-            <input
-              type="text"
-              value={searchDocValue}
-              onChange={(e) => setSearchDocValue(e.target.value)}
-              className="block w-full pl-11 pr-4 py-2.5 bg-[#f1f5f9] border border-transparent rounded-xl text-sm placeholder-slate-450 focus:outline-none focus:bg-white focus:border-blue-500 hover:bg-[#e2e8f0]/70 transition-all font-medium text-slate-800"
-              placeholder="搜索文档或知识库..."
-            />
-          </div>
-          <div className="text-xs text-slate-400 font-semibold tracking-wide">
-            当前定位: {selectedFolder.name}
-          </div>
-        </div>
-
-        {/* Main Split Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="flex flex-col flex-1 min-h-0 pb-4 animate-fade-in font-sans">
+        {/* Main Split Layout — search bar moved inside left column */}
+        <div className="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-5">
           {/* Left Drawer Navigation */}
-          <div className="lg:col-span-1 space-y-4">
+          <div className="lg:col-span-1 flex flex-col space-y-3 min-h-0">
+            {/* Search bar — now in left column, same width as KB list */}
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-4 w-4 text-slate-400" />
+              </div>
+              <input
+                type="text"
+                value={searchDocValue}
+                onChange={(e) => setSearchDocValue(e.target.value)}
+                className="block w-full pl-9 pr-3 py-2 bg-[#f1f5f9] border border-transparent rounded-xl text-xs placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-500 hover:bg-[#e2e8f0]/70 transition-all font-medium text-slate-800"
+                placeholder="搜索文档..."
+              />
+            </div>
+
             <button
               id="btn-add-folder"
               onClick={handleCreateFolderClick}
-              className="w-full flex items-center justify-center gap-2 py-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md cursor-pointer transition-transform duration-100 active:scale-98"
+              className="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md cursor-pointer transition-transform duration-100 active:scale-98"
             >
               <Plus className="w-5 h-5" />
               <span>新增知识库</span>
             </button>
 
-            <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 shadow-sm">
+            <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 shadow-sm flex-1 min-h-0 overflow-y-auto">
               <h3 className="text-xs font-bold text-slate-400 uppercase tracking-widest px-2 mb-3">最近访问</h3>
 
               <div className="space-y-1">
@@ -463,9 +458,9 @@ export default function KnowledgePage() {
           </div>
 
           {/* Right Detail Panel and Action Desk */}
-          <div className="lg:col-span-3 space-y-6">
+          <div className="lg:col-span-3 flex flex-col min-h-0 space-y-3">
             {/* Header Description */}
-            <div className="bg-white border border-[#e2e8f0] rounded-2xl p-6 shadow-sm space-y-4">
+            <div className="bg-white border border-[#e2e8f0] rounded-2xl p-4 shadow-sm">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <div className="flex items-center gap-2">
@@ -513,7 +508,7 @@ export default function KnowledgePage() {
               onDragLeave={handleDragLeave}
               onDrop={handleDrop}
               onClick={handleManualUpload}
-              className={`cursor-pointer border-2 border-dashed py-12 px-6 rounded-2xl flex flex-col justify-center items-center text-center transition-all ${
+              className={`cursor-pointer border-2 border-dashed py-8 px-6 rounded-2xl flex flex-col justify-center items-center text-center transition-all ${
                 isDragging
                   ? "border-blue-500 bg-blue-50/50 scale-[0.99]"
                   : "border-slate-200 bg-slate-50 hover:bg-blue-50/20 hover:border-blue-400"
@@ -529,7 +524,7 @@ export default function KnowledgePage() {
             </div>
 
             {/* Uploaded Documents Table */}
-            <div className="bg-white border border-[#e2e8f0] rounded-2xl shadow-sm overflow-hidden">
+            <div className="flex-1 min-h-0 bg-white border border-[#e2e8f0] rounded-2xl shadow-sm overflow-hidden flex flex-col">
               <div className="flex justify-between items-center px-6 py-4 border-b border-slate-100">
                 <h3 className="text-sm font-bold text-slate-800 flex items-center gap-2">
                   <span className="w-1.5 h-4 bg-blue-600 rounded-full"></span>
@@ -542,25 +537,25 @@ export default function KnowledgePage() {
               </div>
 
               {filteredDocs.length === 0 ? (
-                <div className="text-center py-12 text-slate-400 text-xs font-semibold font-sans">
+                <div className="flex-1 flex items-center justify-center text-slate-400 text-xs font-semibold font-sans">
                   当前知识库文件夹暂无上传文档
                 </div>
               ) : (
-                <div className="overflow-x-auto">
+                <div className="flex-1 overflow-y-auto">
                   <table className="w-full text-left border-collapse">
                     <thead>
                       <tr className="bg-slate-50 border-b border-slate-100 text-xs font-bold text-slate-400 uppercase tracking-wider">
-                        <th className="px-6 py-4">文件名</th>
-                        <th className="px-6 py-4">状态</th>
-                        <th className="px-6 py-4">词汇量</th>
-                        <th className="px-6 py-4">上传时间</th>
+                        <th className="px-5 py-3">文件名</th>
+                        <th className="px-5 py-3">状态</th>
+                        <th className="px-5 py-3">词汇量</th>
+                        <th className="px-5 py-3">上传时间</th>
                         <th className="px-6 py-4 text-right">操作</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-100 text-sm">
                       {filteredDocs.map((doc) => (
                         <tr key={doc.id} className="hover:bg-slate-50/50 transition-colors">
-                          <td className="px-6 py-4">
+                          <td className="px-5 py-3">
                             <div className="flex items-center gap-3">
                               <FileText
                                 className={`w-5 h-5 shrink-0 ${
@@ -570,7 +565,7 @@ export default function KnowledgePage() {
                               <span className="font-semibold text-slate-700">{doc.name}</span>
                             </div>
                           </td>
-                          <td className="px-6 py-4">
+                          <td className="px-5 py-3">
                             {doc.status === "processing" ? (
                               <div className="flex items-center gap-1.5 text-blue-600 font-bold">
                                 <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
