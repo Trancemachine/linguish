@@ -412,14 +412,14 @@ export default function KnowledgePage() {
                       <button
                         id={`folder-${folder.id}`}
                         onClick={() => setSelectedFolderId(folder.id)}
-                        className="flex items-center gap-3 flex-1 text-left"
+                        className="flex items-center gap-2 flex-1 text-left min-w-0"
                       >
                         {isSelected ? (
-                          <FolderOpen className="w-4 h-4 text-blue-600" />
+                          <FolderOpen className="w-4 h-4 text-blue-600 shrink-0" />
                         ) : (
-                          <Folder className="w-4 h-4 text-slate-400" />
+                          <Folder className="w-4 h-4 text-slate-400 shrink-0" />
                         )}
-                        <span className="truncate max-w-[100px]">{folder.name}</span>
+                        <span className="truncate text-xs">{folder.name}</span>
                         {folder.isSystem && (
                           <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-blue-100 text-blue-600 ml-1 shrink-0">
                             系统
@@ -625,7 +625,7 @@ export default function KnowledgePage() {
 
         {/* Create Knowledge Base Modal */}
         {showCreateModal && (
-          <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-950/40 backdrop-blur-sm z-50 flex items-center justify-center h-full p-4">
             <div className="bg-white rounded-2xl w-full max-w-md shadow-2xl p-6 border border-slate-100 animate-scale-up space-y-6">
               <div className="flex justify-between items-center border-b border-slate-100 pb-3">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
