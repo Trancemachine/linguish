@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Linguish — AI 智能英语学习平台</title>
-  <meta name="description" content="Linguish 是一款基于 AI 的英语学习平台，支持文档上传、智能词汇提取、闪卡记忆与 AI 对话练习。" />
+  <title>英语学习 — Linguish</title>
+  <meta name="description" content="学者的智囊团 · 智能英语学习平台" />
   <link rel="icon" href="https://raw.githubusercontent.com/Trancemachine/linguish/main/public/favicon.ico" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -12,7 +12,14 @@
       theme: {
         extend: {
           colors: {
-            primary: { 50: '#eff6ff', 100: '#dbeafe', 200: '#bfdbfe', 300: '#93c5fd', 400: '#60a5fa', 500: '#3b82f6', 600: '#2563eb', 700: '#1d4ed8' }
+            background: '#f8f9ff',
+            foreground: '#434655',
+            primary: '#004ac6',
+            'primary-light': '#dce9ff',
+            'primary-muted': '#eff4ff',
+            border: '#c3c6d7',
+            muted: '#737686',
+            card: '#ffffff',
           }
         }
       }
@@ -20,266 +27,103 @@
   </script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-    * { font-family: 'Inter', system-ui, sans-serif; }
+    * { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     html { scroll-behavior: smooth; }
-    .gradient-hero { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #1e293b 100%); }
-    .gradient-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15); }
-    .tech-badge { @apply px-3 py-1.5 rounded-full text-xs font-medium transition hover:scale-105; }
-    .fade-in { animation: fadeIn 0.6s ease-out forwards; opacity: 0; }
-    .fade-in-up { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-    .delay-1 { animation-delay: 0.1s; }
-    .delay-2 { animation-delay: 0.2s; }
-    .delay-3 { animation-delay: 0.3s; }
-    .delay-4 { animation-delay: 0.4s; }
   </style>
 </head>
-<body class="bg-gray-50 text-gray-900 antialiased">
+<body class="min-h-full bg-background text-foreground antialiased">
 
-  <!-- Navigation -->
-  <nav class="fixed top-0 inset-x-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <div class="flex items-center gap-2">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6">
-          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-        </svg>
-        <span class="font-bold text-lg text-gray-900">Linguish</span>
-      </div>
-      <div class="flex items-center gap-4">
-        <a href="#features" class="text-sm text-gray-600 hover:text-blue-600 transition">功能</a>
-        <a href="#tech" class="text-sm text-gray-600 hover:text-blue-600 transition">技术栈</a>
-        <a href="#demo" class="text-sm text-gray-600 hover:text-blue-600 transition">演示</a>
-        <a href="https://github.com/Trancemachine/linguish" target="_blank" class="flex items-center gap-1.5 text-sm bg-gray-900 text-white px-4 py-2 rounded-full hover:bg-gray-800 transition">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-          GitHub
-        </a>
-      </div>
-    </div>
-  </nav>
+  <main class="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a1628] px-4">
 
-  <!-- Hero -->
-  <section class="gradient-hero min-h-screen flex items-center pt-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 py-20 text-center">
-      <div class="fade-in">
-        <span class="inline-flex items-center gap-1 bg-blue-500/10 text-blue-300 text-xs font-medium px-3 py-1 rounded-full border border-blue-400/20 mb-6">
-          🚀 AI 驱动 · 智能学习
-        </span>
+    <!-- Background blur effects -->
+    <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl"></div>
+
+    <div class="relative z-10 w-full max-w-md">
+
+      <!-- Logo & Title -->
+      <div class="mb-8 text-center">
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#004ac6] text-white">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+        </div>
+        <h1 class="text-3xl font-bold text-white">英语学习</h1>
+        <p class="mt-2 text-sm text-white/60">专业英语学习</p>
       </div>
-      <h1 class="fade-in-up delay-1 text-4xl sm:text-6xl font-extrabold text-white leading-tight mb-6">
-        让 AI 成为你的<br />
-        <span class="bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-400 bg-clip-text text-transparent">英语学习私教</span>
-      </h1>
-      <p class="fade-in-up delay-2 text-lg sm:text-xl text-gray-300 max-w-2xl mx-auto mb-10 leading-relaxed">
-        上传文档自动提取核心词汇 · AI 对话实战练习 · 闪卡记忆 · 掌握进度追踪
+
+      <!-- Auth Card -->
+      <div class="rounded-xl border border-[#c3c6d7] bg-white shadow-xl">
+
+        <!-- Tabs -->
+        <div class="flex border-b border-[#c3c6d7]">
+          <button type="button" class="flex-1 py-3 text-sm font-medium transition border-b-2 border-[#004ac6] text-[#004ac6]">登录</button>
+          <button type="button" class="flex-1 py-3 text-sm font-medium transition text-[#737686]">注册</button>
+        </div>
+
+        <!-- Login Form -->
+        <form class="space-y-4 p-6">
+
+          <!-- Email -->
+          <div>
+            <label class="mb-1.5 block text-sm text-[#737686]">电子邮箱</label>
+            <div class="relative">
+              <svg class="lucide lucide-mail absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737686]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
+              <input type="email" placeholder="example@academic.edu" class="w-full rounded-lg border border-[#c3c6d7] py-2.5 pl-10 pr-4 text-sm outline-none focus:border-[#004ac6]" />
+            </div>
+          </div>
+
+          <!-- Password -->
+          <div>
+            <div class="mb-1.5 flex items-center justify-between">
+              <label class="text-sm text-[#737686]">密码</label>
+              <button type="button" class="text-xs text-[#004ac6]">忘记密码？</button>
+            </div>
+            <div class="relative">
+              <input type="password" placeholder="••••••••" class="w-full rounded-lg border border-[#c3c6d7] py-2.5 pl-4 pr-10 text-sm outline-none focus:border-[#004ac6]" />
+              <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#737686]">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="w-full rounded-lg bg-[#004ac6] py-2.5 text-sm font-medium text-white transition hover:bg-[#004ac6]/90">进入平台</button>
+
+          <!-- Divider -->
+          <div class="relative py-2">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-[#c3c6d7]"></div>
+            </div>
+            <span class="relative mx-auto block w-fit bg-white px-3 text-xs text-[#737686]">或</span>
+          </div>
+
+          <!-- Guest button -->
+          <button type="button" class="flex w-full items-center justify-center gap-2 rounded-lg border border-[#004ac6]/20 bg-[#eff4ff] py-2.5 text-sm font-medium text-[#004ac6] transition hover:bg-[#dce9ff]">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+            先体验（游客模式）
+          </button>
+        </form>
+      </div>
+
+      <!-- Footer -->
+      <p class="mt-6 text-center text-xs text-white/40">
+        继续操作即表示您同意我们的
+        <a href="#" class="text-[#dce9ff] underline">服务协议</a> 和
+        <a href="#" class="text-[#dce9ff] underline">隐私政策</a>
       </p>
-      <div class="fade-in-up delay-3 flex flex-wrap justify-center gap-4">
-        <a href="#demo" class="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-600/25">
-          ▶ 观看演示
+
+      <!-- GitHub link -->
+      <div class="mt-4 text-center">
+        <a href="https://github.com/Trancemachine/linguish" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition">
+          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
+          trancemachine/linguish
         </a>
-        <a href="https://github.com/Trancemachine/linguish" target="_blank" class="inline-flex items-center gap-2 bg-white/10 text-white px-8 py-3.5 rounded-full font-semibold hover:bg-white/20 transition border border-white/20">
-          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-          源代码
-        </a>
       </div>
+
     </div>
-  </section>
+  </main>
 
-  <!-- Features -->
-  <section id="features" class="py-24 bg-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-16">
-        <span class="text-blue-600 text-sm font-semibold tracking-wider uppercase">核心功能</span>
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">一站式英语学习工作台</h2>
-        <p class="text-gray-500 mt-3 max-w-xl mx-auto">从文档到词汇，从理解到运用，AI 贯穿全流程</p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">文档智能解析</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">支持 PDF / DOCX / TXT 格式上传，自动提取文本内容，AI 精准识别核心词汇与关键句子。</p>
-        </div>
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25Z"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">知识库管理</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">按主题或项目创建知识库，归类管理词汇，支持搜索、过滤，复习进度一目了然。</p>
-        </div>
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">闪卡记忆</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">单词 + 音标 + 释义 + 例句，支持发音朗读。标记「掌握」或「收藏」，智能安排复习节奏。</p>
-        </div>
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-purple-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 0 1 .778-.332 48.294 48.294 0 0 0 5.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">AI 对话练习</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">基于知识库词汇的 AI 对话，模拟真实语境练习。支持翻译辅助，让开口说英语不再难。</p>
-        </div>
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-rose-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-rose-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">翻译辅助</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">DeepSeek AI 驱动的智能翻译，句子级理解，让阅读英文文档无障碍。</p>
-        </div>
-
-        <div class="gradient-card bg-white border border-gray-100 rounded-2xl p-6 shadow-sm transition-all">
-          <div class="w-12 h-12 bg-cyan-50 rounded-xl flex items-center justify-center mb-4">
-            <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z"/></svg>
-          </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">学习统计</h3>
-          <p class="text-sm text-gray-500 leading-relaxed">追踪已掌握词汇量、学习时长，可视化你的进步曲线，让努力有迹可循。</p>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- Demo Video -->
-  <section id="demo" class="py-24 bg-gray-50">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-      <span class="text-blue-600 text-sm font-semibold tracking-wider uppercase">演示视频</span>
-      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2 mb-4">看看 Linguish 如何工作</h2>
-      <p class="text-gray-500 mb-10 max-w-xl mx-auto">从上传文档到 AI 对话练习，完整流程演示</p>
-
-      <!-- Video placeholder — replace src with your actual video URL -->
-      <div class="relative bg-gray-900 rounded-2xl overflow-hidden shadow-2xl aspect-video">
-        <video
-          id="demo-video"
-          class="w-full h-full object-contain"
-          controls
-          poster=""
-        >
-          <source src="" type="video/mp4" />
-          您的浏览器不支持视频播放。
-        </video>
-        <div id="video-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-gray-800 text-gray-400 pointer-events-none">
-          <svg class="w-16 h-16 mb-4 text-gray-600" fill="none" stroke="currentColor" stroke-width="1" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z"/></svg>
-          <span class="text-sm">将演示视频文件放入 <code class="text-blue-400 bg-gray-700 px-2 py-0.5 rounded">docs/demo.mp4</code></span>
-        </div>
-      </div>
-
-      <p class="text-xs text-gray-400 mt-4">💡 把录好的演示视频重命名为 <code class="bg-gray-100 px-1.5 py-0.5 rounded">demo.mp4</code> 放到 <code class="bg-gray-100 px-1.5 py-0.5 rounded">docs/</code> 目录，页面会自动加载</p>
-    </div>
-  </section>
-
-  <!-- Tech Stack -->
-  <section id="tech" class="py-24 bg-white">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="text-center mb-16">
-        <span class="text-blue-600 text-sm font-semibold tracking-wider uppercase">技术架构</span>
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mt-2">技术栈全景</h2>
-        <p class="text-gray-500 mt-3 max-w-xl mx-auto">现代全栈架构，AI 驱动</p>
-      </div>
-
-      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
-
-        <div class="fade-in-up">
-          <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-blue-600 rounded-full"></span>
-            前端
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="tech-badge bg-blue-50 text-blue-700 border border-blue-100">Next.js 16</span>
-            <span class="tech-badge bg-blue-50 text-blue-700 border border-blue-100">React 19</span>
-            <span class="tech-badge bg-blue-50 text-blue-700 border border-blue-100">TypeScript</span>
-            <span class="tech-badge bg-blue-50 text-blue-700 border border-blue-100">Tailwind CSS v4</span>
-            <span class="tech-badge bg-blue-50 text-blue-700 border border-blue-100">SWR</span>
-          </div>
-        </div>
-
-        <div class="fade-in-up delay-1">
-          <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-emerald-600 rounded-full"></span>
-            后端 & 数据库
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="tech-badge bg-emerald-50 text-emerald-700 border border-emerald-100">Next.js API Routes</span>
-            <span class="tech-badge bg-emerald-50 text-emerald-700 border border-emerald-100">Supabase</span>
-            <span class="tech-badge bg-emerald-50 text-emerald-700 border border-emerald-100">PostgreSQL</span>
-            <span class="tech-badge bg-emerald-50 text-emerald-700 border border-emerald-100">pgvector</span>
-            <span class="tech-badge bg-emerald-50 text-emerald-700 border border-emerald-100">Supabase Auth</span>
-          </div>
-        </div>
-
-        <div class="fade-in-up delay-2">
-          <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-purple-600 rounded-full"></span>
-            AI & 文档
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="tech-badge bg-purple-50 text-purple-700 border border-purple-100">DeepSeek</span>
-            <span class="tech-badge bg-purple-50 text-purple-700 border border-purple-100">pdf-parse</span>
-            <span class="tech-badge bg-purple-50 text-purple-700 border border-purple-100">mammoth</span>
-            <span class="tech-badge bg-purple-50 text-purple-700 border border-purple-100">tesseract.js</span>
-            <span class="tech-badge bg-purple-50 text-purple-700 border border-purple-100">Web Speech API</span>
-          </div>
-        </div>
-
-        <div class="fade-in-up delay-3">
-          <h3 class="text-sm font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <span class="w-1 h-4 bg-amber-600 rounded-full"></span>
-            部署 & 运维
-          </h3>
-          <div class="flex flex-wrap gap-2">
-            <span class="tech-badge bg-amber-50 text-amber-700 border border-amber-100">Cloudflare</span>
-            <span class="tech-badge bg-amber-50 text-amber-700 border border-amber-100">阿里云域名</span>
-            <span class="tech-badge bg-amber-50 text-amber-700 border border-amber-100">GitHub Pages</span>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- GitHub CTA -->
-  <section class="py-20 bg-gray-900 text-white">
-    <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
-      <h2 class="text-3xl font-bold mb-4">开源 · 可自部署</h2>
-      <p class="text-gray-400 mb-8 max-w-lg mx-auto">Linguish 完全开源，你可以自由部署在自己的服务器上，数据完全自主掌控。</p>
-      <a href="https://github.com/Trancemachine/linguish" target="_blank" class="inline-flex items-center gap-2 bg-white text-gray-900 px-8 py-3.5 rounded-full font-semibold hover:bg-gray-100 transition">
-        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-        查看源代码
-      </a>
-    </div>
-  </section>
-
-  <!-- Footer -->
-  <footer class="bg-gray-950 text-gray-400 py-8 text-center text-sm">
-    <p>Linguish · 基于 Next.js + Supabase + DeepSeek 构建</p>
-    <p class="mt-1">© 2026 <a href="https://github.com/Trancemachine" class="hover:text-white transition">Trancemachine</a></p>
-  </footer>
-
-  <script>
-    // Auto-load demo video if demo.mp4 exists
-    const video = document.getElementById('demo-video');
-    const placeholder = document.getElementById('video-placeholder');
-    const source = video.querySelector('source');
-
-    // Try loading the video — if the file doesn't exist, show the placeholder
-    const checkVideo = async () => {
-      const resp = await fetch('./demo.mp4', { method: 'HEAD' }).catch(() => {});
-      if (resp && resp.ok) {
-        source.src = './demo.mp4';
-        video.load();
-        placeholder.style.display = 'none';
-      }
-    };
-    checkVideo();
-  </script>
 </body>
 </html>
