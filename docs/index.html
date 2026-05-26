@@ -133,12 +133,12 @@
       <header class="sticky top-0 z-10 flex h-12 items-center border-b border-border bg-card/80 px-6 backdrop-blur">
         <div><h1 id="page-title" class="text-base font-semibold text-foreground">单词练习</h1><p id="page-desc" class="text-xs text-muted">点击单词展开详情，支持发音与进度标记</p></div>
       </header>
-      <main class="flex-1 px-6 py-4 flex flex-col min-h-0">
+      <main class="flex-1 px-8 py-5 flex flex-col min-h-0">
 
         <!-- ===== WORDS PAGE ===== -->
         <div id="view-words" class="view flex flex-col flex-1 min-h-0 pb-4 animate-fade-in">
           <!-- Filter Tabs + KB Selector + Search -->
-          <div class="flex flex-col sm:flex-row items-center gap-2 bg-white border border-slate-200 p-2.5 rounded-2xl shadow-sm">
+          <div class="flex flex-col sm:flex-row items-center gap-3 bg-white border border-slate-200 p-3 rounded-2xl shadow-sm">
             <div class="flex gap-2 ml-2">
               <button onclick="filterWords('all')" id="filter-all" class="px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap bg-blue-600 text-white">全部单词 <span id="count-all" class="text-blue-200 font-normal">(0)</span></button>
               <button onclick="filterWords('review')" id="filter-review" class="px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800">待复习 <span id="count-review" class="text-slate-400 font-normal">(0)</span></button>
@@ -157,7 +157,7 @@
             </div>
           </div>
           <!-- Words List -->
-          <div id="words-container" class="flex-1 flex flex-col min-h-0 mt-2"></div>
+          <div id="words-container" class="flex-1 flex flex-col min-h-0 mt-3"></div>
         </div>
 
         <!-- ===== DIALOGUE PAGE ===== -->
@@ -180,7 +180,7 @@
                 <svg id="mute-icon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
               </button>
             </div>
-            <div id="dialogue-messages" class="flex-1 overflow-y-auto px-6 pt-14 pb-2 space-y-4">
+            <div id="dialogue-messages" class="flex-1 overflow-y-auto px-6 pt-14 pb-2 space-y-5">
               <div class="flex justify-start">
                 <div class="max-w-[95%] sm:max-w-[90%] rounded-2xl px-4 py-3 text-sm leading-relaxed bg-primary-muted text-foreground">
                   Hello! I'm your AI interview coach. Let's practice a job interview scenario. Tell me about your research background.
@@ -446,7 +446,7 @@
       }
 
       let html = '<div class="flex-1 flex flex-col min-h-0">';
-      html += '<div class="flex-1 space-y-1.5 overflow-y-auto">';
+      html += '<div class="flex-1 space-y-2 overflow-y-auto">';
       pg.forEach(w => {
         const status = wordStatus[w.id] || 'none';
         const isExpanded = expandedWordId === w.id;
