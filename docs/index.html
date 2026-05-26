@@ -29,101 +29,418 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     html { scroll-behavior: smooth; }
+    .page { display: none; }
+    .page.active { display: flex; }
+    .nav-link.active { background-color: #dce9ff; color: #004ac6; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
   </style>
 </head>
 <body class="min-h-full bg-background text-foreground antialiased">
 
-  <main class="relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a1628] px-4">
-
-    <!-- Background blur effects -->
-    <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-blue-600/20 blur-3xl"></div>
-    <div class="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-blue-600/10 blur-3xl"></div>
-
+  <!-- ==================== AUTH PAGE ==================== -->
+  <div id="page-auth" class="page active relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a1628] px-4">
+    <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl"></div>
+    <div class="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
     <div class="relative z-10 w-full max-w-md">
-
-      <!-- Logo & Title -->
       <div class="mb-8 text-center">
-        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#004ac6] text-white">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7">
-            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-          </svg>
+        <div class="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary text-white">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
         </div>
         <h1 class="text-3xl font-bold text-white">英语学习</h1>
         <p class="mt-2 text-sm text-white/60">专业英语学习</p>
       </div>
-
-      <!-- Auth Card -->
-      <div class="rounded-xl border border-[#c3c6d7] bg-white shadow-xl">
-
-        <!-- Tabs -->
-        <div class="flex border-b border-[#c3c6d7]">
-          <button type="button" class="flex-1 py-3 text-sm font-medium transition border-b-2 border-[#004ac6] text-[#004ac6]">登录</button>
-          <button type="button" class="flex-1 py-3 text-sm font-medium transition text-[#737686]">注册</button>
+      <div class="rounded-xl border border-border bg-card shadow-xl">
+        <div class="flex border-b border-border">
+          <button onclick="switchAuthTab('login')" id="tab-login" class="flex-1 py-3 text-sm font-medium transition border-b-2 border-primary text-primary">登录</button>
+          <button onclick="switchAuthTab('register')" id="tab-register" class="flex-1 py-3 text-sm font-medium transition text-muted hover:text-foreground">注册</button>
         </div>
-
-        <!-- Login Form -->
-        <form class="space-y-4 p-6">
-
-          <!-- Email -->
+        <form onsubmit="handleAuth(event)" class="space-y-4 p-6">
+          <div id="auth-error" class="hidden rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600"></div>
           <div>
-            <label class="mb-1.5 block text-sm text-[#737686]">电子邮箱</label>
+            <label class="mb-1.5 block text-sm text-muted">电子邮箱</label>
             <div class="relative">
-              <svg class="lucide lucide-mail absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#737686]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"></path><rect x="2" y="4" width="20" height="16" rx="2"></rect></svg>
-              <input type="email" placeholder="example@academic.edu" class="w-full rounded-lg border border-[#c3c6d7] py-2.5 pl-10 pr-4 text-sm outline-none focus:border-[#004ac6]" />
+              <svg class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7"/><rect x="2" y="4" width="20" height="16" rx="2"/></svg>
+              <input id="auth-email" type="email" placeholder="example@academic.edu" class="w-full rounded-lg border border-border py-2.5 pl-10 pr-4 text-sm outline-none focus:border-primary" required />
             </div>
           </div>
-
-          <!-- Password -->
           <div>
             <div class="mb-1.5 flex items-center justify-between">
-              <label class="text-sm text-[#737686]">密码</label>
-              <button type="button" class="text-xs text-[#004ac6]">忘记密码？</button>
+              <label class="text-sm text-muted">密码</label>
+              <button type="button" class="text-xs text-primary">忘记密码？</button>
             </div>
             <div class="relative">
-              <input type="password" placeholder="••••••••" class="w-full rounded-lg border border-[#c3c6d7] py-2.5 pl-4 pr-10 text-sm outline-none focus:border-[#004ac6]" />
-              <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#737686]">
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <input id="auth-password" type="password" placeholder="••••••••" class="w-full rounded-lg border border-border py-2.5 pl-4 pr-10 text-sm outline-none focus:border-primary" required />
+              <button type="button" onclick="togglePassword()" class="absolute right-3 top-1/2 -translate-y-1/2 text-muted">
+                <svg id="eye-icon" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg>
               </button>
             </div>
           </div>
-
-          <!-- Submit -->
-          <button type="submit" class="w-full rounded-lg bg-[#004ac6] py-2.5 text-sm font-medium text-white transition hover:bg-[#004ac6]/90">进入平台</button>
-
-          <!-- Divider -->
+          <button type="submit" class="w-full rounded-lg bg-primary py-2.5 text-sm font-medium text-white transition hover:bg-primary/90 disabled:opacity-50">进入平台</button>
           <div class="relative py-2">
-            <div class="absolute inset-0 flex items-center">
-              <div class="w-full border-t border-[#c3c6d7]"></div>
-            </div>
-            <span class="relative mx-auto block w-fit bg-white px-3 text-xs text-[#737686]">或</span>
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-border"></div></div>
+            <span class="relative mx-auto block w-fit bg-card px-3 text-xs text-muted">或</span>
           </div>
-
-          <!-- Guest button -->
-          <button type="button" class="flex w-full items-center justify-center gap-2 rounded-lg border border-[#004ac6]/20 bg-[#eff4ff] py-2.5 text-sm font-medium text-[#004ac6] transition hover:bg-[#dce9ff]">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"></path><path d="M20 2v4"></path><path d="M22 4h-4"></path><circle cx="4" cy="20" r="2"></circle></svg>
+          <button type="button" onclick="enterGuestMode()" class="flex w-full items-center justify-center gap-2 rounded-lg border border-primary/20 bg-primary-muted py-2.5 text-sm font-medium text-primary transition hover:bg-primary-light">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg>
             先体验（游客模式）
           </button>
         </form>
       </div>
+      <p class="mt-6 text-center text-xs text-white/40">继续操作即表示您同意我们的 <a href="#" class="text-primary-light underline">服务协议</a> 和 <a href="#" class="text-primary-light underline">隐私政策</a></p>
+      <p class="mt-3 rounded-lg border border-amber-500/30 bg-amber-500/10 px-4 py-2 text-center text-xs text-amber-200">当前为演示模式。点击「先体验」进入平台</p>
+    </div>
+  </div>
 
-      <!-- Footer -->
-      <p class="mt-6 text-center text-xs text-white/40">
-        继续操作即表示您同意我们的
-        <a href="#" class="text-[#dce9ff] underline">服务协议</a> 和
-        <a href="#" class="text-[#dce9ff] underline">隐私政策</a>
-      </p>
 
-      <!-- GitHub link -->
-      <div class="mt-4 text-center">
-        <a href="https://github.com/Trancemachine/linguish" target="_blank" class="inline-flex items-center gap-1.5 text-xs text-white/40 hover:text-white/70 transition">
-          <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
-          trancemachine/linguish
+  <!-- ==================== MAIN APP ==================== -->
+  <div id="page-app" class="page min-h-screen bg-background">
+    <!-- Sidebar -->
+    <aside class="fixed left-0 top-0 flex h-screen w-64 flex-col border-r border-border bg-card z-20">
+      <div class="flex items-center gap-3 px-6 py-6">
+        <div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        </div>
+        <div><p class="text-lg font-bold text-primary">英语学习</p><p class="text-xs text-muted">专业英语学习</p></div>
+      </div>
+      <nav class="flex flex-col gap-2 px-4 pt-6">
+        <a href="#" onclick="navigateTo('words')" id="nav-words" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors nav-link text-muted hover:bg-primary-muted hover:text-foreground">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21.42 10.922a1 1 0 0 0-.019-1.838L12.83 5.18a2 2 0 0 0-1.66 0L2.6 9.08a1 1 0 0 0 0 1.832l8.57 3.908a2 2 0 0 0 1.66 0z"/><path d="M22 10v6"/><path d="M6 12.5V16a6 3 0 0 0 12 0v-3.5"/></svg>单词练习
+        </a>
+        <a href="#" onclick="navigateTo('dialogue')" id="nav-dialogue" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors nav-link text-muted hover:bg-primary-muted hover:text-foreground">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 17a2 2 0 0 1-2 2H6.828a2 2 0 0 0-1.414.586l-2.202 2.202A.71.71 0 0 1 2 21.286V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2z"/></svg>对话练习
+        </a>
+        <a href="#" onclick="navigateTo('knowledge')" id="nav-knowledge" class="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors nav-link text-muted hover:bg-primary-muted hover:text-foreground">
+          <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>知识库
+        </a>
+      </nav>
+      <div class="mt-auto border-t border-border p-4">
+        <a href="#" onclick="logout()" class="flex items-center justify-center gap-2 rounded-lg border border-border py-2 text-sm text-muted hover:bg-primary-muted hover:text-foreground">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>退出演示
         </a>
       </div>
+    </aside>
 
+    <!-- Main content area -->
+    <div class="pl-64 min-h-screen flex flex-col">
+      <!-- Header -->
+      <header class="sticky top-0 z-10 flex h-12 items-center border-b border-border bg-card/80 px-6 backdrop-blur">
+        <div><h1 id="page-title" class="text-base font-semibold text-foreground">单词练习</h1><p id="page-desc" class="text-xs text-muted">点击单词展开详情，支持发音与进度标记</p></div>
+      </header>
+      <main class="flex-1 px-6 py-4 flex flex-col">
+
+        <!-- ===== WORDS PAGE ===== -->
+        <div id="view-words" class="view flex flex-col flex-1 min-h-0 pb-4 animate-fade-in">
+          <div class="flex flex-col sm:flex-row items-center gap-2 bg-white border border-slate-200 p-2.5 rounded-2xl shadow-sm">
+            <div class="flex gap-2 ml-2">
+              <button onclick="filterWords('all')" id="filter-all" class="px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap bg-blue-600 text-white">全部单词 <span id="count-all" class="text-blue-200 font-normal">(0)</span></button>
+              <button onclick="filterWords('review')" id="filter-review" class="px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800">待复习 <span id="count-review" class="text-slate-400 font-normal">(0)</span></button>
+              <button onclick="filterWords('starred')" id="filter-starred" class="px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800">生词本 <span id="count-starred" class="text-slate-400 font-normal">(0)</span></button>
+            </div>
+            <div class="relative shrink-0">
+              <button class="bg-white border border-slate-200 text-slate-600 font-semibold px-3 py-1.5 rounded-xl text-xs flex items-center gap-2 hover:border-slate-300 transition-colors">
+                <span class="truncate max-w-[120px]">学术英语</span>
+                <svg class="w-3.5 h-3.5 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+            </div>
+            <div class="relative w-full sm:w-56 ml-auto">
+              <input id="word-search" oninput="searchWords()" type="text" placeholder="搜索词汇..." class="w-full pl-8 pr-3 py-1.5 text-xs border border-slate-200 rounded-xl focus:outline-none focus:ring-1 focus:ring-blue-500" />
+              <svg class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+            </div>
+          </div>
+          <div class="flex-1 flex flex-col min-h-0 mt-2">
+            <div id="words-list" class="flex-1 bg-white border border-slate-200 rounded-2xl p-4 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+          </div>
+        </div>
+
+        <!-- ===== DIALOGUE PAGE ===== -->
+        <div id="view-dialogue" class="view hidden flex-1 min-h-0 animate-fade-in">
+          <div class="relative flex flex-1 min-h-0 flex-col rounded-xl border border-border bg-card pb-1">
+            <div class="absolute left-3 top-3 z-10">
+              <button class="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white/95 px-3 py-2 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur hover:border-slate-300 transition-colors">
+                <span class="truncate max-w-[100px]">学术英语</span>
+                <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+              </button>
+            </div>
+            <div id="dialogue-messages" class="flex-1 overflow-y-auto px-4 pt-14 pb-2 flex flex-col gap-3">
+              <div class="text-center text-xs text-slate-400 py-4">选择一个知识库，开始 AI 对话练习</div>
+            </div>
+            <div class="border-t border-border p-3 flex gap-2">
+              <input id="dialogue-input" type="text" placeholder="输入你想练习的内容..." class="flex-1 rounded-lg border border-border px-3 py-2 text-sm outline-none focus:border-primary" />
+              <button onclick="sendDialogue()" class="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90 transition">发送</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- ===== KNOWLEDGE PAGE ===== -->
+        <div id="view-knowledge" class="view hidden flex-1 min-h-0 animate-fade-in">
+          <div class="flex flex-col flex-1 min-h-0 pb-4 font-sans">
+            <div class="flex-1 min-h-0 grid grid-cols-1 lg:grid-cols-4 gap-5">
+              <div class="lg:col-span-1 flex flex-col space-y-3 min-h-0">
+                <div class="relative"><input type="text" placeholder="搜索知识库..." class="block w-full pl-9 pr-3 py-2 bg-[#f1f5f9] border border-transparent rounded-xl text-xs placeholder-slate-400 focus:outline-none focus:bg-white focus:border-blue-500 hover:bg-[#e2e8f0]/70 transition-all font-medium text-slate-800" /><svg class="absolute left-3 top-2.5 h-4 w-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></div>
+                <button class="w-full flex items-center justify-center gap-2 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-xl shadow-md cursor-pointer"><svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>新建知识库</button>
+                <div class="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 shadow-sm flex-1 min-h-0 overflow-y-auto">
+                  <p class="text-xs font-bold text-slate-400 uppercase tracking-widest px-2 mb-3">我的知识库</p>
+                  <div id="kb-list" class="space-y-1"></div>
+                </div>
+              </div>
+              <div class="lg:col-span-3 flex flex-col min-h-0 space-y-3">
+                <div class="bg-white border border-[#e2e8f0] rounded-2xl p-4 shadow-sm">
+                  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div class="flex items-center gap-2"><span class="text-xs font-bold px-2.5 py-1 bg-blue-50 text-blue-600 rounded-md">学术英语</span><h2 id="kb-word-count" class="text-2xl font-bold text-slate-800 tracking-tight">12 个词汇</h2></div>
+                    <div class="flex items-center gap-3 shrink-0"><button class="px-4 py-2.5 bg-blue-600 text-white hover:bg-blue-700 text-xs font-bold rounded-xl shadow-md shadow-blue-100 transition-colors cursor-pointer">+ 上传文档</button></div>
+                  </div>
+                </div>
+                <div class="flex-1 min-h-0 bg-white border border-[#e2e8f0] rounded-2xl shadow-sm overflow-hidden flex flex-col">
+                  <div class="flex justify-between items-center px-6 py-4 border-b border-slate-100">
+                    <span class="text-sm font-bold text-slate-800 flex items-center gap-2"><span class="w-1.5 h-4 bg-blue-600 rounded-full"></span>文档列表</span>
+                    <button class="flex items-center gap-1 text-xs text-slate-400 hover:text-slate-600 font-bold transition-all"><svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>排序</button>
+                  </div>
+                  <div id="doc-list" class="flex-1 overflow-y-auto p-6 flex flex-col items-center justify-center text-slate-400 text-xs font-semibold">暂无文档，点击「上传文档」添加</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </main>
     </div>
-  </main>
+  </div>
+
+
+  <script>
+    // ===== DEMO DATA =====
+    const demoWords = [
+      { word: 'algorithm', phonetic: '/ˈælɡərɪðəm/', pos: 'n.', definition: '算法', example: 'The algorithm efficiently sorts large datasets.', knowledgeBase: '学术英语' },
+      { word: 'hypothesis', phonetic: '/haɪˈpɒθəsɪs/', pos: 'n.', definition: '假说，假设', example: 'The scientist tested her hypothesis through experiments.', knowledgeBase: '学术英语' },
+      { word: 'paradigm', phonetic: '/ˈpærədaɪm/', pos: 'n.', definition: '范式，典范', example: 'This discovery represents a paradigm shift in physics.', knowledgeBase: '学术英语' },
+      { word: 'analyze', phonetic: '/ˈænəlaɪz/', pos: 'v.', definition: '分析', example: 'We need to analyze the data before drawing conclusions.', knowledgeBase: '学术英语' },
+      { word: 'significant', phonetic: '/sɪɡˈnɪfɪkənt/', pos: 'adj.', definition: '重要的，显著的', example: 'There was a significant increase in test scores.', knowledgeBase: '学术英语' },
+      { word: 'methodology', phonetic: '/ˌmeθəˈdɒlədʒi/', pos: 'n.', definition: '方法论', example: 'The research methodology was carefully designed.', knowledgeBase: '学术英语' },
+      { word: 'correlation', phonetic: '/ˌkɒrəˈleɪʃən/', pos: 'n.', definition: '相关性', example: 'There is a strong correlation between study time and grades.', knowledgeBase: '学术英语' },
+      { word: 'empirical', phonetic: '/ɪmˈpɪrɪkəl/', pos: 'adj.', definition: '经验主义的', example: 'The theory is supported by empirical evidence.', knowledgeBase: '学术英语' },
+      { word: 'synthesize', phonetic: '/ˈsɪnθəsaɪz/', pos: 'v.', definition: '综合，合成', example: 'The paper synthesizes findings from multiple studies.', knowledgeBase: '学术英语' },
+      { word: 'variable', phonetic: '/ˈveriəbəl/', pos: 'n.', definition: '变量', example: 'Temperature was a key variable in the experiment.', knowledgeBase: '学术英语' },
+      { word: 'validate', phonetic: '/ˈvælɪdeɪt/', pos: 'v.', definition: '验证', example: 'We need to validate the results with additional testing.', knowledgeBase: '学术英语' },
+      { word: 'theoretical', phonetic: '/ˌθɪəˈretɪkəl/', pos: 'adj.', definition: '理论的', example: 'The framework provides a theoretical basis for the study.', knowledgeBase: '学术英语' },
+    ];
+
+    const demoKnowledgeBases = [
+      { name: '学术英语', words: 12, docs: 3 },
+      { name: '商务英语', words: 8, docs: 2 },
+      { name: '六级词汇', words: 15, docs: 1 },
+    ];
+
+    const dialogueResponses = [
+      "That's an interesting point! In academic contexts, we often use formal language to express our ideas clearly.",
+      "Great question! Let me explain this concept in more detail. The key is to practice using these words in context.",
+      "You're making good progress! Try using this word in a sentence related to your field of study.",
+      "I understand your question. Here's an example that illustrates how this term is used in academic writing.",
+    ];
+
+    let words = [...demoWords];
+    let wordStatus = {}; // word -> 'starred' | 'mastered' | 'none'
+    let currentFilter = 'all';
+    let dialogueCount = 0;
+
+    // ===== AUTH =====
+    let authTab = 'login';
+    function switchAuthTab(tab) {
+      authTab = tab;
+      document.getElementById('tab-login').className = tab === 'login' ? 'flex-1 py-3 text-sm font-medium transition border-b-2 border-primary text-primary' : 'flex-1 py-3 text-sm font-medium transition text-muted hover:text-foreground';
+      document.getElementById('tab-register').className = tab === 'register' ? 'flex-1 py-3 text-sm font-medium transition border-b-2 border-primary text-primary' : 'flex-1 py-3 text-sm font-medium transition text-muted hover:text-foreground';
+    }
+
+    let passwordVisible = false;
+    function togglePassword() {
+      passwordVisible = !passwordVisible;
+      document.getElementById('auth-password').type = passwordVisible ? 'text' : 'password';
+      document.getElementById('eye-icon').innerHTML = passwordVisible
+        ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>'
+        : '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>';
+    }
+    function showAuthError(msg) {
+      const el = document.getElementById('auth-error');
+      el.textContent = msg;
+      el.classList.remove('hidden');
+    }
+    function handleAuth(e) {
+      e.preventDefault();
+      const email = document.getElementById('auth-email').value;
+      const pwd = document.getElementById('auth-password').value;
+      if (!email || !pwd) { showAuthError('请填写邮箱和密码'); return; }
+      enterGuestMode();
+    }
+
+    function enterGuestMode() {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-app').classList.add('active');
+      renderWords();
+      renderKnowledgeBases();
+      renderDashboard();
+      updateCounts();
+    }
+
+    function logout() {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-auth').classList.add('active');
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+    }
+
+    // ===== NAVIGATION =====
+    function navigateTo(view) {
+      document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+      const el = document.getElementById('view-' + view);
+      if (el) el.classList.remove('hidden');
+      document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+      const nav = document.getElementById('nav-' + view);
+      if (nav) nav.classList.add('active');
+      const titles = {
+        words: ['单词练习', '点击单词展开详情，支持发音与进度标记'],
+        dialogue: ['对话练习', '与 AI 进行英语对话练习，提升口语能力'],
+        knowledge: ['知识库', '管理你的文档和词汇知识库'],
+      };
+      if (titles[view]) {
+        document.getElementById('page-title').textContent = titles[view][0];
+        document.getElementById('page-desc').textContent = titles[view][1];
+      }
+      if (view === 'dialogue') {
+        if (dialogueCount === 0) {
+          document.getElementById('dialogue-messages').innerHTML = '<div class="text-center text-xs text-slate-400 py-4">AI 已就绪，开始你的对话练习吧</div>';
+        }
+      }
+    }
+
+    // ===== WORDS =====
+    function renderWords() {
+      const container = document.getElementById('words-list');
+      let filtered = words;
+      if (currentFilter === 'starred') filtered = words.filter(w => wordStatus[w.word] === 'starred');
+      else if (currentFilter === 'review') filtered = words.filter(w => !wordStatus[w.word] || wordStatus[w.word] === 'none');
+
+      const q = document.getElementById('word-search').value.toLowerCase();
+      if (q) filtered = filtered.filter(w => w.word.toLowerCase().includes(q) || w.definition.includes(q));
+
+      if (filtered.length === 0) {
+        container.innerHTML = '<div class="col-span-full flex items-center justify-center text-xs font-bold text-slate-400 py-16">暂无匹配词汇</div>';
+        return;
+      }
+      container.innerHTML = filtered.map(w => {
+        const status = wordStatus[w.word] || 'none';
+        const isStarred = status === 'starred';
+        const isMastered = status === 'mastered';
+        return `
+          <div class="bg-white border border-slate-200 rounded-xl p-3.5 hover:shadow-sm transition-shadow">
+            <div class="flex items-start justify-between">
+              <div class="flex-1">
+                <div class="flex items-center gap-2">
+                  <span class="text-sm font-bold text-slate-800">${w.word}</span>
+                  <span class="text-[10px] text-slate-400 font-mono">${w.phonetic}</span>
+                  <span class="text-[10px] text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">${w.pos}</span>
+                </div>
+                <p class="text-xs text-blue-600 font-medium mt-0.5">${w.definition}</p>
+                <p class="text-[10px] text-slate-400 mt-1 italic">${w.example}</p>
+              </div>
+              <div class="flex gap-1 ml-2 shrink-0">
+                <button onclick="toggleStar('${w.word}')" class="p-1 rounded hover:bg-slate-100 transition-colors">
+                  <svg class="w-4 h-4 ${isStarred ? 'text-yellow-500 fill-yellow-500' : 'text-slate-300'}" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                </button>
+                <button onclick="toggleMaster('${w.word}')" class="p-1 rounded hover:bg-slate-100 transition-colors">
+                  <svg class="w-4 h-4 ${isMastered ? 'text-green-500' : 'text-slate-300'}" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </button>
+                <button onclick="speakWord('${w.word}')" class="p-1 rounded hover:bg-slate-100 transition-colors">
+                  <svg class="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>`;
+      }).join('');
+    }
+
+    function toggleStar(word) {
+      const s = wordStatus[word] || 'none';
+      wordStatus[word] = s === 'starred' ? 'none' : 'starred';
+      renderWords(); updateCounts();
+    }
+    function toggleMaster(word) {
+      const s = wordStatus[word] || 'none';
+      wordStatus[word] = s === 'mastered' ? 'none' : 'mastered';
+      renderWords(); updateCounts();
+    }
+    function speakWord(word) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US'; u.rate = 0.8;
+      speechSynthesis.speak(u);
+    }
+    function filterWords(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('[id^="filter-"]').forEach(b => {
+        b.className = b.id === 'filter-' + filter
+          ? 'px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap bg-blue-600 text-white'
+          : 'px-3 py-1.5 text-xs font-bold rounded-xl transition-all whitespace-nowrap text-slate-500 hover:bg-slate-50 hover:text-slate-800';
+      });
+      renderWords();
+    }
+    function searchWords() { renderWords(); }
+    function updateCounts() {
+      document.getElementById('count-all').textContent = `(${words.length})`;
+      document.getElementById('count-review').textContent = `(${words.filter(w => !wordStatus[w.word] || wordStatus[w.word] === 'none').length})`;
+      document.getElementById('count-starred').textContent = `(${words.filter(w => wordStatus[w.word] === 'starred').length})`;
+    }
+
+    // ===== DIALOGUE =====
+    function sendDialogue() {
+      const input = document.getElementById('dialogue-input');
+      const msg = input.value.trim();
+      if (!msg) return;
+      input.value = '';
+      const container = document.getElementById('dialogue-messages');
+      container.innerHTML = container.innerHTML.replace('<div class="text-center text-xs text-slate-400 py-4">AI 已就绪，开始你的对话练习吧</div>', '');
+      container.innerHTML += `
+        <div class="flex justify-end"><div class="max-w-[70%] bg-blue-600 text-white rounded-2xl rounded-br-md px-4 py-2.5 text-sm">${escapeHtml(msg)}</div></div>
+      `;
+      dialogueCount++;
+      setTimeout(() => {
+        const resp = dialogueResponses[dialogueCount % dialogueResponses.length];
+        container.innerHTML += `
+          <div class="flex justify-start"><div class="max-w-[70%] bg-slate-100 text-slate-800 rounded-2xl rounded-bl-md px-4 py-2.5 text-sm">${resp}</div></div>
+        `;
+        container.scrollTop = container.scrollHeight;
+      }, 1000 + Math.random() * 1500);
+      container.scrollTop = container.scrollHeight;
+    }
+
+    // ===== KNOWLEDGE =====
+    function renderKnowledgeBases() {
+      const list = document.getElementById('kb-list');
+      list.innerHTML = demoKnowledgeBases.map(kb => `
+        <div class="flex items-center justify-between px-3 py-2 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors">
+          <div class="flex items-center gap-2"><svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span class="text-sm font-semibold text-slate-700">${kb.name}</span></div>
+          <span class="text-[10px] text-slate-400">${kb.words} 词</span>
+        </div>`).join('');
+    }
+    function renderDashboard() {
+      // Dashboard is the knowledge page itself
+    }
+
+    // ===== UTILS =====
+    function escapeHtml(text) {
+      const d = document.createElement('div');
+      d.textContent = text;
+      return d.innerHTML;
+    }
+
+    // Init
+    navigateTo('words');
+  </script>
+
+  <!-- GitHub link -->
+  <div class="fixed bottom-4 right-4 z-50">
+    <a href="https://github.com/Trancemachine/linguish" target="_blank" class="inline-flex items-center gap-1.5 bg-white/90 backdrop-blur border border-slate-200 text-slate-600 px-3 py-2 rounded-full text-xs font-medium shadow-sm hover:shadow-md hover:text-slate-900 transition-all">
+      <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 21.795 24 17.295 24 12 24 5.37 18.63 0 12 0z"/></svg>
+      trancemachine/linguish
+    </a>
+  </div>
 
 </body>
 </html>
