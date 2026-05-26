@@ -273,7 +273,8 @@
     }
 
     function enterGuestMode() {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-auth').style.display = 'none';
+      document.getElementById('page-app').style.display = '';
       document.getElementById('page-app').classList.add('active');
       renderWords();
       renderKnowledgeBases();
@@ -282,8 +283,8 @@
     }
 
     function logout() {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.getElementById('page-auth').classList.add('active');
+      document.getElementById('page-auth').style.display = '';
+      document.getElementById('page-app').style.display = 'none';
       document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
     }
 
