@@ -29,8 +29,11 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     html { scroll-behavior: smooth; }
-    .page { display: none !important; }
-    .page.active { display: flex !important; }
+    .page { display: none; }
+    .page.active { display: flex; }
+    .nav-link.active { background-color: #dce9ff; color: #004ac6; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
     .nav-link.active { background-color: #dce9ff; color: #004ac6; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
@@ -39,7 +42,7 @@
 <body class="min-h-full bg-background text-foreground antialiased">
 
   <!-- ==================== AUTH PAGE ==================== -->
-  <div id="page-auth" class="page active relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a1628] px-4">
+  <div id="page-auth" class="page active relative flex min-h-screen items-center justify-center overflow-hidden bg-[#0a1628] px-4" style="display:flex">
     <div class="pointer-events-none absolute -left-32 -top-32 h-96 w-96 rounded-full bg-primary/20 blur-3xl"></div>
     <div class="pointer-events-none absolute -bottom-32 -right-32 h-96 w-96 rounded-full bg-primary/10 blur-3xl"></div>
     <div class="relative z-10 w-full max-w-md">
@@ -273,8 +276,8 @@
     }
 
     function enterGuestMode() {
-      document.getElementById('page-auth').style.display = 'none';
-      document.getElementById('page-app').style.display = '';
+      document.getElementById('page-auth').style.setProperty('display', 'none', 'important');
+      document.getElementById('page-app').style.removeProperty('display');
       document.getElementById('page-app').classList.add('active');
       renderWords();
       renderKnowledgeBases();
@@ -283,8 +286,8 @@
     }
 
     function logout() {
-      document.getElementById('page-auth').style.display = '';
-      document.getElementById('page-app').style.display = 'none';
+      document.getElementById('page-auth').style.removeProperty('display');
+      document.getElementById('page-app').style.setProperty('display', 'none', 'important');
       document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
     }
 
