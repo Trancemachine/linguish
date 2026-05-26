@@ -29,8 +29,8 @@
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
     * { font-family: 'Inter', 'PingFang SC', 'Microsoft YaHei', sans-serif; }
     html { scroll-behavior: smooth; }
-    .page { display: none; }
-    .page.active { display: flex; }
+    .page { display: none !important; }
+    .page.active { display: flex !important; }
     .nav-link.active { background-color: #dce9ff; color: #004ac6; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     .animate-fade-in { animation: fadeIn 0.25s ease-out forwards; }
